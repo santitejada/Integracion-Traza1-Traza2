@@ -21,5 +21,14 @@ public class Empresa {
     @Builder.Default
     private Set<Sucursal> sucursales = new HashSet<>();
 
+    public String mostrarStockEmpresa() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Stock de ").append(this.getNombre()).append(":\n");
+        for (Sucursal suc : sucursales) {
+            sb.append(suc.mostrarStock());
+        }
+        return sb.toString();
+    }
+
 
 }

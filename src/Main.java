@@ -1,4 +1,8 @@
+import Articulos.Articulo;
+import Articulos.ArticuloInsumo;
+import Articulos.ArticuloManufacturado;
 import Entidades.*;
+import Inventario.StockSucursal;
 import Repositorios.InMemoryRepository;
 
 import java.time.LocalTime;
@@ -11,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         // Inicializar repositorios
         InMemoryRepository<Empresa> empresaRepository = new InMemoryRepository<>();
-        System.out.println(" -----------PROBAMOS EL SISTEMA ----------");
+        System.out.println("\n========== PRUEBAS DEL PROYECTO ANTERIOR ==========\n");
 
         //Creamos un pais "ARGENTINA"
         Pais argentina = Pais.builder().nombre("Argentina").
@@ -162,13 +166,13 @@ public class Main {
         empresaRepository.save(empresa2);
 
         // Mostrar todas las empresas
-        System.out.println("Todas las empresas:");
+        System.out.println("\nTodas las empresas:\n");
         List<Empresa> todasLasEmpresas = empresaRepository.findAll();
         todasLasEmpresas.forEach(System.out::println);
 
         // Buscar empresa por ID
         Optional<Empresa> empresaEncontrada = empresaRepository.findById(1L);
-        empresaEncontrada.ifPresent(e -> System.out.println("Empresa encontrada por ID 1: " + e));
+        empresaEncontrada.ifPresent(e -> System.out.println("\nEmpresa encontrada por ID 1: \n" + e));
 
         // Buscar empresa por nombre
         List<Empresa> empresasPorNombre = empresaRepository.genericFindByField("nombre", "Empresa 1");
@@ -196,10 +200,10 @@ public class Main {
         }
 
         // Mostrar todas las empresas restantes
-        System.out.println("Todas las empresas después de la eliminación:");
+        System.out.println("\nTodas las empresas después de la eliminación: ");
         List<Empresa> empresasRestantes = empresaRepository.findAll();
         empresasRestantes.forEach(System.out::println);
-        System.out.println("--------------Mostrar las sucursales de una empresa determinada");
+        System.out.println("\n--Mostrar las sucursales de una empresa determinada--\n");
 
         // Mostrar las sucursales de una empresa determinada
         Optional<Empresa> empresa = empresaRepository.findById(2L);
@@ -211,6 +215,37 @@ public class Main {
             System.out.println("Empresa con ID " + " no encontrada.");
         }
 
+//de aca para abajo es nuevo
+        System.out.println("\n========== PRUEBAS DE STOCK POR SUCURSAL ==========\n");
+    // Crear artículos e insumos
+        ArticuloInsumo harina = new ArticuloInsumo("harina", 1.0, 100, 10, 200, true);
+        ArticuloInsumo sal = new ArticuloInsumo("sal",0.5, 50, 5, 100, true);
+        ArticuloInsumo cocaCola = new ArticuloInsumo("CocaCola", 5, 25, 100, 100, false);
+
+        ArticuloManufacturado pizzaHawaiana = new ArticuloManufacturado("Pizza Hawaiana", 12.0);
+        ArticuloManufacturado lomoCompleto = new ArticuloManufacturado("Lomo Completo", 15.0);
+
+
+    // Cargar stock con precios distintos por sucursal
+        sucursal1.agregarStock(pizzaHawaiana, 10, 20.0);
+        sucursal1.agregarStock(lomoCompleto, 5, 25.0);
+        sucursal1.agregarStock(cocaCola, 12, 10.0);
+
+        sucursal2.agregarStock(pizzaHawaiana, 3, 22.0);
+        sucursal2.agregarStock(lomoCompleto, 8, 27.0);
+        sucursal2.agregarStock(cocaCola, 5, 10.0);
+
+        sucursal3.agregarStock(pizzaHawaiana, 7, 23.5);
+        sucursal3.agregarStock(lomoCompleto, 10, 28.0);
+        sucursal3.agregarStock(cocaCola, 20, 14.0);
+
+        sucursal4.agregarStock(pizzaHawaiana, 0, 21.0);
+        sucursal4.agregarStock(lomoCompleto, 2, 26.0);
+        sucursal4.agregarStock(cocaCola, 8, 14.0);
+
+// Mostrar stock de todas las empresas
+        System.out.println(empresa1.mostrarStockEmpresa());
+        System.out.println(empresa2.mostrarStockEmpresa());
+    }
 
     }
-}
